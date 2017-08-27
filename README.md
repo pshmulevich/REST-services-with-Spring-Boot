@@ -94,7 +94,7 @@ public class Application {
 ```
 
 ## Step 4:
-Open command window and enter this line:
+Open command window and enter this command:
 
 ```
 mvn clean package && java -jar target/rest-services-with-spring-boot-0.0.1-SNAPSHOT.jar
@@ -107,11 +107,7 @@ http://localhost:8080
 ```
 The page will have the "Placeholder" message in it.
 
-## Congrats! 
-This is a baseline web application and it is running live! (until you stop it from running with ctrl-c in command window)
 
-
-Referenced links:
+Referenced link:
 1) https://spring.io/guides/gs/spring-boot/
-2) https://mydevgeek.com/deploying-spring-boot-application-aws-using-ec2-rds/
 
