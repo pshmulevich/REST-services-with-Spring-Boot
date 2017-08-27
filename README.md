@@ -7,7 +7,7 @@ Spring Boot uses Spring, which is a java-based framework that helps rapidly buil
 Either install or begin using eclipse for the project.
 Check to make sure JDK version is at least 1.8, Maven 3.0
 
-## Step 1: You'll want to do is to create a new Maven project in eclipse
+## Step 1: Create a new Maven project in eclipse
 
 Open pom.xml file and add the following under groupId and artifactId:
 
@@ -40,13 +40,13 @@ Open pom.xml file and add the following under groupId and artifactId:
     </build> 
 ```
 
-## Step 2:  creating a web controller for your application.
+## Step 2:  Create a web controller for the application.
 Create a new java controller class and name it responsibly. Here is an example:
 
+```
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-```
 @RestController
 public class Controller {
 
@@ -96,15 +96,22 @@ public class Application {
 ## Step 4:
 Open command window and enter this line:
 
-``` mvn package && java -jar target/gs-spring-boot-0.1.0.jar ```
+```
+mvn clean package && java -jar target/rest-services-with-spring-boot-0.0.1-SNAPSHOT.jar
+```
 Make sure that the right jar file is running
 
-## Step 5: Now you want to see your work. Open up the web browser and type:
-``` http://localhost:8080 ```
+## Step 5: Open up the web browser and type:
+```
+http://localhost:8080
+```
 The page will have the "Placeholder" message in it.
 
 ## Congrats! 
 This is a baseline web application and it is running live! (until you stop it from running with ctrl-c in command window)
 
 
+Referenced links:
+1) https://spring.io/guides/gs/spring-boot/
+2) https://mydevgeek.com/deploying-spring-boot-application-aws-using-ec2-rds/
 
