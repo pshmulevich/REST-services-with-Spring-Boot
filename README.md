@@ -97,7 +97,7 @@ public class Application {
 Open command window and enter this command:
 
 ```
-mvn clean package && java -jar target/rest-services-with-spring-boot-0.0.1-SNAPSHOT.jar
+mvn clean package spring-boot:run
 ```
 Make sure that the right jar file is running
 
@@ -169,7 +169,7 @@ To terminate it at any time, use the command:
 
 * git clone <URL of your github project>
 
-*  mvn package && java -jar target/gs-spring-boot-0.1.0.jar
+*  mvn clean package spring-boot:run
 
 
 Referenced link:
