@@ -158,6 +158,26 @@ Add @Component annotation to the DateServiceImpl class which makes it a Spring B
 return "Welcome to Spring Application with Boot. It is " + dateService.getDate();
 ```
 
+## Step 7: Adding more url mappings 
+1) The original Controller had mapping to only one url:
+```
+@RequestMapping("/")
+public String index() {
+    return "Welcome to Spring Application with Boot. It is " + dateService.getDate();
+}
+```
+2) A more sophisticated Controller can route to several urls instead of just one, depending on which url is bound to it.
+Create a new method in the Controller class, called `page1()` and add a new @RequestMapping annotation to it, for example: 
+
+```
+@RequestMapping("/page1")
+public String page1(){
+    return "page1";
+}
+```
+The response to `http://localhost:8080/page1` will show the string "page1" on it.
+
+
 # Part 2:  Deploying to AWS
 
 How to launch Rest project on AWS:

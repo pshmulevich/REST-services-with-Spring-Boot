@@ -18,4 +18,13 @@ public class Controller {
 		return "Welcome to Spring Application with Boot. It is " + dateService.getDate();
 	}
 
+	@RequestMapping("/page1")
+	public String page1() {
+		return "Welcome to page 1";
+	}
+
+	@RequestMapping("/page2")
+	public String page2() {
+		return "Welcome to page 2";
+	}
 }
