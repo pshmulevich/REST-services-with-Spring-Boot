@@ -107,6 +107,77 @@ http://localhost:8080
 ```
 The page will have the "Placeholder" message in it.
 
+## Step 6: Adding a service:
+To add a service, for example, to display a date on your page, do the following:
+
+
+1) Create an interface DateService with method getDate() that returns the current date and time:
+```
+ /**
+  * Interface for a DateService
+  *
+  */
+ public interface DateService {
+    /**
+     * Returns current date
+     *
+     * @return date
+     */
+    public String getDate();
+ }
+```
+
+2) Create the implementation class DateServiceImpl that implements the method getDate(). 
+Add @Component annotation to the DateServiceImpl class which makes it a Spring Bean, or in other words it makes it available for dependency injection:
+```
+...
+ /**
+  * DateService implementation.
+  * The @Component annotation makes it a Spring Bean.
+  */
+ @Component
+ public class DateServiceImpl implements DateService {
+ 
+    @Override
+    public String getDate() {
+        return new Date().toString();
+    }
+}
+...
+```
+
+3) Use @Autowired annotation to inject the newly created DateServiceImpl by its interface DateService into the Controller class: 
+```
+// Inject DateService
+ +  @Autowired
+ +  private DateService dateService;
+```
+
+4) Use the injected service to render the date in the response:
+```
+return "Welcome to Spring Application with Boot. It is " + dateService.getDate();
+```
+
+## Step 7: Adding more url mappings 
+1) The original Controller had mapping to only one url:
+```
+@RequestMapping("/")
+public String index() {
+    return "Welcome to Spring Application with Boot. It is " + dateService.getDate();
+}
+```
+2) A more sophisticated Controller can route to several urls instead of just one, depending on which url is bound to it.
+Create a new method in the Controller class, called `page1()` and add a new @RequestMapping annotation to it, for example: 
+
+```
+@RequestMapping("/page1")
+public String page1(){
+    return "page1";
+}
+```
+The response to `http://localhost:8080/page1` will show the string "page1" on it.
+
+
 # Part 2:  Deploying to AWS
 
 How to launch Rest project on AWS:
