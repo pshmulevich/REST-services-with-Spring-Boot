@@ -167,7 +167,7 @@ public String index() {
 }
 ```
 2) A more sophisticated Controller can route to several urls instead of just one, depending on which url is bound to it.
-Create a new method in the Controller class, called `page1()` and add a new @RequestMapping annotation to it, for example: 
+Create a new method in the Controller class, called `page1()` and add a new `@RequestMapping` annotation to it, for example: 
 
 ```
 @RequestMapping("/page1")
@@ -176,6 +176,30 @@ public String page1(){
 }
 ```
 The response to `http://localhost:8080/page1` will show the string "page1" on it.
+
+
+## Step 8: Writing a unit test to check content matching
+
+1) The pom.xml file needs to be updated with a new dependency:
+```
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-test</artifactId>
+    <scope>test</scope>
+</dependency>
+```
+
+2) In the same package as your class, or along the same line as the same package, create a test class that will run a comparison of the string content inside the class:
+```
+...
+vc.perform(MockMvcRequestBuilders.get("/page1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(equalTo("Welcome to page 1")));
+...
+```
+
+3) Right click on the class and run it. The unit test should pass.
+
 
 
 # Part 2:  Deploying to AWS
