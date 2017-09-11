@@ -2,6 +2,7 @@ package com.rest.example;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rest.example.services.DateService;
@@ -19,8 +20,8 @@ public class Controller {
 	}
 
 	@RequestMapping("/page1")
-	public String page1() {
-		return "Welcome to page 1";
+	public String page1(@RequestParam(value = "applicationTitle") String applicationTitle) {
+		return "Welcome to page 1 of " + applicationTitle;
 	}
 
 	@RequestMapping("/page2")

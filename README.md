@@ -189,18 +189,52 @@ The response to `http://localhost:8080/page1` will show the string "page1" on it
 </dependency>
 ```
 
-2) In the same package as your class, or along the same line as the same package, create a test class that will run a comparison of the string content inside the class:
+2) In the same package as your Controller class being tested create a test class that will ensure the Controller output matches the expected string:
 ```
 ...
-vc.perform(MockMvcRequestBuilders.get("/page1").accept(MediaType.APPLICATION_JSON))
+mvc.perform(MockMvcRequestBuilders.get("/page1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(equalTo("Welcome to page 1")));
 ...
 ```
+where mvc is a MockMvc instance that is autowired into your test class.
 
-3) Right click on the class and run it. The unit test should pass.
+3) Right click on the class and run it as JUnit application.
 
 
+4) The previous unit test verified absolute matching. This will be harder for larger content. Instead it may be more desirable to verify a substring matching. To do that, create a new unit test.
+
+Implement a special Matcher that handles finding a substring of a given string using `org.mockito.internal.matchers.Contains` class:
+```
+    Matcher<? super String> matcher = new Contains("page 1");
+    mvc.perform(MockMvcRequestBuilders.get("/page1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(matcher));
+```
+7) When running the test, it will find "page 1" in the full string "Welcome to page 1"
+
+Note: This allows you to automate a test to verify that at least part of the string you want to find in your code is there. Using the mvc platform also allows an easier way to search for a string than to look up regex patterns. 
+
+## Adding a parameter to a controller method:
+
+A parameter to a controller method is the same as an http request query parameter
+
+In the Controller class, add on the parameter to the method signature:
+`public String page1(@RequestParam(value = "applicationTitle") String applicationTitle) {...` 
+
+To use this parameter in the body of the method, reference `applicationTitle` when computing the return value:
+`return "Welcome to page 1 of " + parameter;`
+
+Note: the get request to this url should now look like: `http://localhost:8080/page1?applicationTitle=app` instead of `http://localhost:8080/page1`. Spring will validate that this required parameter is present else the page loading will result in 400 error.
+
+To test the new parameter, you will need to modify the unit test as well:
+In the Controller SubstringTest to add a parameter you update the line `mvc.perform(MockMvcRequestBuilders.get("/page1").accept(MediaType.APPLICATION_JSON))`
+ to include the query parameter part and create a corresponding local variable `String queryParams`for it:
+ ```
+String queryParams = "?" + paramName1 + "=" + paramValue1;
+mvc.perform(MockMvcRequestBuilders.get("/page1" + queryParams).accept(MediaType.APPLICATION_JSON))
+ ```
+ If the part of the content that the test is validating involves the new parameter, you may also have to update the Matcher to include it as well.
 
 # Part 2:  Deploying to AWS
 
