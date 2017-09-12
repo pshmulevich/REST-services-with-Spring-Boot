@@ -236,6 +236,42 @@ mvc.perform(MockMvcRequestBuilders.get("/page1" + queryParams).accept(MediaType.
  ```
  If the part of the content that the test is validating involves the new parameter, you may also have to update the Matcher to include it as well.
 
+## Adding a webpage Controller to work with JSP pages: 
+Even though this is a REST application, it may be useful to have a controller to handle webpages
+
+1) Create a `WebController.java` class.
+
+2) Create a new controller class called WebController:
+```
+@Controller
+public class WebController { ...}
+```
+3) Create a method for welcome
+Note: the method needs annotation @GetMapping("/"); @GetMapping same as @RequestMapping, but it is specifically for the GET method. 
+```
+@GetMapping("/") // default mapping
+    public String welcome(Map<String, Object> model) {...}
+```
+4) you should return the corresponding "welcome" at the end to enable successful routing.
+
+5) Update the application.properties file:
+
+i)This is the location for the jsp pages within `src/main/webapp`: `spring.mvc.view.prefix: /WEB-INF/jsp/`
+ii) the jsp extension: `spring.mvc.view.suffix`: `.jsp`
+iii) an override for `application.message` property; `application.message: Custom Application Message`
+
+Additional Notes:
+About displaying messages:
+
+In the application.properties file, 
+
+    spring.mvc.view.prefix: /WEB-INF/jsp/
+    spring.mvc.view.suffix: .jsp
+    application.message: Custom Application Message
+
+
+
+
 # Part 2:  Deploying to AWS
 
 How to launch Rest project on AWS:
