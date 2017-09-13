@@ -269,6 +269,9 @@ In the application.properties file,
     spring.mvc.view.suffix: .jsp
     application.message: Custom Application Message
 
+6) Adding test for web page controller using jsp as view: 
+see `WebControllerSubstringTest` class for details
+
 
 
 

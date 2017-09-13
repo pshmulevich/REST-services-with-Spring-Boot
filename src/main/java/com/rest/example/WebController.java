@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class WebController {
 
 	@Value("${application.message:Default Application Message}")
-	private String message = "Hello World";
+	private String webControllerMessage = "Hello World";
 
 	@GetMapping("/welcomePage")
 	public String welcome(Map<String, Object> model) {
 		// put some values into the model map to use inside the jsp
 		model.put("time", new Date());
-		model.put("message", this.message);
+		model.put("webControllerMessage", this.webControllerMessage);
 		// "welcome" stands for the path to the jsp page "welcome.jsp"
 		return "welcome";
 	}
