@@ -239,7 +239,7 @@ mvc.perform(MockMvcRequestBuilders.get("/page1" + queryParams).accept(MediaType.
 ## Adding a webpage Controller to work with JSP pages: 
 Even though this is a REST application, it may be useful to have a controller to handle webpages
 
-1) Create a `WebController.java` class.
+1) Create a `WebController` class.
 
 2) Create a new controller class called WebController:
 ```
