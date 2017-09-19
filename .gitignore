@@ -2,3 +2,5 @@
 .classpath
 .settings/
 target/
+#the real application.properties file may contain sensitive information
+application.properties

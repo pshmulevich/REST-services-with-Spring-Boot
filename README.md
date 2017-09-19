@@ -3,7 +3,7 @@
 Spring Boot uses Spring, which is a java-based framework that helps rapidly build and deploy an application. Spring Boot allows easy creation of a new Spring stand-alone application that you can run from a single jar file.
 
 
-## Set up:
+# Part 1: Creating a basic REST service app:
 Either install or begin using eclipse for the project.
 Check to make sure JDK version is at least 1.8, Maven 3.0
 
@@ -94,22 +94,15 @@ public class Application {
 ```
 
 ## Step 4:
-Open command window and enter this command:
+Open command window and enter this command: `mvn clean package spring-boot:run`.
 
-```
-mvn clean package spring-boot:run
-```
-Make sure that the right jar file is running
+Make sure the Maven build is successful and the application starts with no errors.
 
-## Step 5: Open up the web browser and type:
-```
-http://localhost:8080
-```
-The page will have the "Placeholder" message in it.
+## Step 5: Open up the web browser and type: `http://localhost:8080`.
+The page should successfully load and display "Placeholder" in the content area.
 
 ## Step 6: Adding a service:
 To add a service, for example, to display a date on your page, do the following:
-
 
 1) Create an interface DateService with method getDate() that returns the current date and time:
 ```
@@ -272,10 +265,121 @@ In the application.properties file,
 6) Adding test for web page controller using jsp as view: 
 see `WebControllerSubstringTest` class for details
 
+# Part 2: Adding persistence
 
+## Integrating REST services with a database using Hibernate
+To make a useful REST application, we would need to read data from and store it in a database.
 
+## Overall project structure
 
-# Part 2:  Deploying to AWS
+project-root
+|
++-> src/main/java
+|      |
+|      +------> com.rest.example
+|      |                    |
+|      |                    +-------Application.java
+|      |
+|      +------> com.rest.example.bean
+|      |                    |
+|      |                    +-------Stock.java
+|      |
+|      +------> com.rest.example.controller
+|      |                    |
+|      |                    +-------MainController.java
+|      |
+|      +------> com.rest.example.persistence
+|      |                    |
+|      |                    +-------StockRepository.java
+|      |
+|      +------> src/main/resources
+|                           |
+|                           +-------application.properties
+|            
++ -> src/test/java
+|      |
+|      +--------------> com.rest.example.controller
+|                           |
+|                           +-------ControllerTest.java
+|
++-pom.xml
++-README.md
+
+## Step 1: Update pom.xml file
+Add the following dependencies to your pom.xml:
+```
+<!-- JPA Data (We are going to use Repositories, Entities, Hibernate, etc...) -->       
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+
+<!-- Use MySQL Connector-J -->
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+</dependency>
+```
+## Step 2: Create a database
+ In this example, the Heidi MySQL client was used to manually create a new database.
+ In the lefthand tab, right-click -> create new -> database and enter the database name `rest_example_db`.
+ 
+## Step 3: Update the `application.properties` file
+Add this property to automatically create tables:
+`spring.jpa.hibernate.ddl-auto=create`
+Configure your datasource url that consists of type, database name, host name
+`spring.datasource.url=jdbc:mysql://<database-server-hostname>:<port>/<databaseName>`
+Add your database credentials:
+
+`spring.datasource.username=<username>`
+`spring.datasource.password=<pwd>`
+
+## Step 4: Create a bean class
+You need a Bean class to map a database table to a Java object. For this example we will be using a Stock class. 
+Apply the annotation `@Entity` to the class definition. This tells hibernate to map it to a database table.
+Create only the default constructor and no others. Then add getters and setters. Build and run the project with this command: `mvn clean package spring-boot:run`.
+
+Note that the command window output should have lines similar to:
+```
+org.hibernate.tool.hbm2ddl.SchemaExport  : HHH000227: Running hbm2ddl schema export
+org.hibernate.tool.hbm2ddl.SchemaExport  : HHH000230: Schema export complete
+```
+These lines indicate that tables were created in the database.
+ 
+To verify table creation go to your database client to check that you successfully created stock database table, using query commands:
+`select * from stock`
+Or:
+`descr table stock`
+
+## Step 5: Add the Controller class
+This class uses the `@GetMapping` annotation. This annotation maps to the HTTP GET request, just like `@PostMapping` maps to the HTTP POST request.
+Create separate methods for different REST operations like add, delete, get, getAll, etc.
+For example:
+```
+    @GetMapping(path = "/add")
+    public @ResponseBody String addNewUser(
+            @RequestParam String symbol,
+            @RequestParam Date date,
+            @RequestParam Double previousClose,
+            @RequestParam Double price) {
+            ...
+    }
+```
+## Step 6: Testing
+There are three ways to test your application:
+- Browser: enter this url into your browser: 
+```
+http://localhost:8080/demo/add?symbol=AAPL&date=09/21/2017&previousClose=100&price=100
+```
+After the page loads, you should see the message, "Saved new entry".
+- Curl command: use a curl command to send a request to your controller. 
+For example: 
+```
+curl 'localhost:<port>/demo/add?<parameter definitions>'
+```
+- Write a functional test using JUnit like StockControllerTest.
+
+# Part 3:  Deploying to AWS
 
 How to launch Rest project on AWS:
 
@@ -292,11 +396,9 @@ Create an AWS account (more details [here](http://docs.aws.amazon.com/AmazonSimp
 
 * Click through the steps at the top of the page and accept the defaults for this example
 
-* On ```5. Add Tags``` step, add a tag called "Name" and in Value, enter the name for your EC2 instance, for example, "REST_Tutorial_EC2_Instance"
+* On `5. Add Tags` step, add a tag called "Name" and in Value, enter the name for your EC2 instance, for example, "REST_Tutorial_EC2_Instance"
 
-
-
-* Now click on ```Configure Security Group```
+* Now click on `Configure Security Group`
 
 * For SSH "rule", its ok to keep Source as 0.0.0.0/0, but for your custom TCP rule, you will need to fix the port at 8080 for the current example
 
@@ -339,8 +441,6 @@ To terminate it at any time, use the command:
 
 *  mvn clean package spring-boot:run
 
-
 Referenced link:
 1) https://spring.io/guides/gs/spring-boot/
 2) https://mydevgeek.com/deploying-spring-boot-application-aws-using-ec2-rds/
-

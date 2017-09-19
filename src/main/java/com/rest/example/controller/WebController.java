@@ -1,4 +1,4 @@
-package com.rest.example;
+package com.rest.example.controller;
 
 import java.util.Date;
 import java.util.Map;
