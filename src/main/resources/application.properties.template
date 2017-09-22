@@ -1,0 +1,14 @@
+# Fill in the placeholders and rename this file by removing the .template extension
+#=================================================================================
+# Properties required to support web pages:
+spring.mvc.view.prefix: /WEB-INF/jsp/
+spring.mvc.view.suffix: .jsp
+application.message: Custom Application Message
+
+# Properties required for persistence:
+spring.jpa.hibernate.ddl-auto=create
+# database Spring_ExampleDB must be created first manually
+spring.datasource.url=jdbc:mysql://<datasource-url>:<port>/<database-name>
+spring.datasource.username=<username>
+spring.datasource.password=<pwd>
+
