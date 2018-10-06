@@ -271,7 +271,7 @@ see `WebControllerSubstringTest` class for details
 To make a useful REST application, we would need to read data from and store it in a database.
 
 ## Overall project structure
-
+```
 project-root
 |
 +-> src/main/java
@@ -304,7 +304,7 @@ project-root
 |
 +-pom.xml
 +-README.md
-
+```
 ## Step 1: Update pom.xml file
 Add the following dependencies to your pom.xml:
 ```
